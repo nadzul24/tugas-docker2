@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   php-apache-environment:
-    images: nadzul/php
+    image: nadzul/php
     container_name: php-apache
     depends_on:
       - db
@@ -9,8 +9,9 @@ services:
       - ./php/src:/var/www/html/
     ports:
       - 8000:80
-    network:
+    networks:
       - backend
+
   db:
     container_name: db
     image: mysql
@@ -23,17 +24,16 @@ services:
     volumes:
       - db:/var/lib/mysql
       - ./php_user.sql:/docker-entrypoint-initdb.d/php_user.sql
-    network:
+    networks:
       - backend
 
 volumes:
   db:
 
 networks:
-  backend: 
+  backend:
     name: backend-network
     ipam:
       driver: default
-      config: 
+      config:
         - subnet: 172.20.0.0/24
-
