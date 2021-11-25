@@ -1,32 +1,30 @@
 version: '3.8'
 services:
-    php-apache-environment:
-        container_name: php-apache
-        build:
-            context: ./php
-            dockerfile: Dockerfile
-        depends_on:
-            - db
-        volumes:
-            - php:./php/src:/var/www/html/
-        ports:
-            - 8000:80
-        network:
-            - backend
-    db:
-        container_name: db
-        image: mysql
-        restart: always
-        environment:
-            MYSQL_ROOT_PASSWORD: admin
-            MYSQL_DATABASE: php_user
-        ports:
-            - "3306:3306"
-        volumes:
-          - db:/var/lib/mysql
-          - ./php_user.sql:/docker-entrypoint-initdb.d/php_user.sql
-        network:
-          - backend
+  php-apache-environment:
+    images: nadzul/php
+    container_name: php-apache
+    depends_on:
+      - db
+    volumes:
+      - php:./php/src:/var/www/html/
+    ports:
+      - 8000:80
+    network:
+      - backend
+  db:
+    container_name: db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: php_user
+    ports:
+      - "3306:3306"
+    volumes:
+      - db:/var/lib/mysql
+      - ./php_user.sql:/docker-entrypoint-initdb.d/php_user.sql
+    network:
+      - backend
 
 volumes:
   php: 
